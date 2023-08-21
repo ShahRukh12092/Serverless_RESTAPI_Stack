@@ -1,0 +1,33 @@
+service: End-point-using-APIGateway
+
+custom:
+  serverless-offline:
+    host: localhost
+    port: 5000
+    httpPort: 5000
+    corsAllowOrigin: "*"
+    corsAllowHeaders: "accept,content-type,x-api-key,Authorization"
+
+provider:
+  name: aws
+  runTime: nodejs14.x
+  stage: ${opt:stage, 'local'}
+  region: us-east-1
+  accountId:
+    Ref: AWS::AccountId
+
+functions:
+  api:
+    handler: handlers/index.returnMessage
+    events:
+      - httpApi:
+          path: /message/{surveyId}
+          method: get
+          required: surveyId
+
+resources:
+
+package:
+
+plugins:
+  - serverless-offline
